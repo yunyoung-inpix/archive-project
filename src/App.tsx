@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Main from "./pages/main";
+import styled from "styled-components";
+import { ThemeProvider } from "styled-components";
+import GlobalStyles from "./styles/GlobalStyles";
+import theme from "./styles/theme";
+
+const Layout = styled.section`
+  align-items: center;
+  background-color: ${theme.backgroundColor};
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <Layout>
+        <Main />
+      </Layout>
+    </ThemeProvider>
   );
 }
 
