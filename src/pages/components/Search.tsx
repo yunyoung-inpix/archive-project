@@ -3,8 +3,10 @@ import { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import theme from "../../styles/theme";
+import Loading from "./Loading";
+import SearchResult from "./SearchResult";
 
-export type SearchResultProps = {
+export type DataProps = {
   blogname: string;
   contents: string;
   title: string;
@@ -64,46 +66,13 @@ const SearchResultSection = styled.section`
   }
 `;
 
-const SearchResult = styled.a`
-  background-color: white;
-  border-radius: 20px;
-  display: block;
-  padding: 30px;
-`;
-
-const ImgBox = styled.div`
-  align-items: center;
-  display: flex;
-  height: 50%;
-  max-width: max-content;
-  justify-content: center;
-  margin-bottom: 22px;
-  width: 100%;
-
-  img {
-    height: 100%;
-  }
-`;
-
-const LoadingBox = styled.div`
-  background-color: lightgray;
-  height: 100%;
-  width: 100%;
-`;
-
-const Loading = styled.div`
-  height: 100%;
-  text-align: center;
-  width: 100%;
-`;
-
 const SearchInput = () => {
   const KAKAO_API = "cf9234ea5d7459ac09ff312f052abc61";
   const apiUrl = "https://dapi.kakao.com/v2/search/blog";
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<SearchResultProps[]>([]);
+  const [searchResults, setSearchResults] = useState<DataProps[]>([]);
 
   const getSearchResults = async () => {
     await axios({
@@ -121,7 +90,6 @@ const SearchInput = () => {
         const data = response.data.documents;
         setSearchResults(data);
         setTimeout(() => setIsLoading(false), 2000);
-        // setKeyword("");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -133,9 +101,13 @@ const SearchInput = () => {
   }
 
   function onSearchBtnClick(e: React.MouseEvent<HTMLButtonElement>) {
-    setIsLoading(true);
-    setKeyword("");
-    getSearchResults();
+    if (keyword === "") {
+      alert("검색어를 입력해주세요!");
+    } else {
+      setIsLoading(true);
+      setKeyword("");
+      getSearchResults();
+    }
   }
 
   return (
@@ -149,24 +121,15 @@ const SearchInput = () => {
       ) : (
         <SearchResultSection>
           {searchResults.map((data) => {
-            console.log(data.thumbnail.length);
-            const preTitle = data.title;
-            const preContents = data.contents;
-            const title = preTitle.replace(/(<([^>]+)>)/gi, "");
-            const contents = preContents.replace(/(<([^>]+)>)/gi, "");
-
             return (
-              <SearchResult key={data.url} href={data.url} target="_blank">
-                <ImgBox>
-                  {data.thumbnail.length !== 0 ? (
-                    <img src={data.thumbnail} />
-                  ) : (
-                    <LoadingBox>이미지가 없어요</LoadingBox>
-                  )}
-                </ImgBox>
-                <h3>{title}</h3>
-                <p>{contents}</p>
-              </SearchResult>
+              <SearchResult
+                key={data.url}
+                blogname={data.blogname}
+                contents={data.contents}
+                thumbnail={data.thumbnail}
+                url={data.url}
+                title={data.title}
+              />
             );
           })}
         </SearchResultSection>
