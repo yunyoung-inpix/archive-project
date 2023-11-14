@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+
 import theme from "../../styles/theme";
 
 const Wrapper = styled.section`
-  /* background-color: antiquewhite; */
   align-items: center;
   display: flex;
   height: 60px;
@@ -22,17 +23,28 @@ const Logo = styled.h1`
     transition: all 0.8s ease-in-out;
   }
 `;
+
+const Menu = styled.div`
+  display: flex;
+  gap: 20px;
+
+  a {
+    color: ${theme.mainColor};
+    font-weight: 100;
+  }
+`;
+
 const Header = () => {
   return (
-    <>
-      <Wrapper>
-        <Logo>Archive</Logo>
-        <div>
-          <span>뿅</span>
-          <span>뿅</span>
-        </div>
-      </Wrapper>
-    </>
+    <Wrapper>
+      <Logo>
+        <Link to="/">Archive</Link>
+      </Logo>
+      <Menu>
+        <Link to="/myblog">MyBlog</Link>
+        <span>뿅</span>
+      </Menu>
+    </Wrapper>
   );
 };
 

@@ -1,8 +1,13 @@
 import React from "react";
-import SearchInput from "./components/Search";
+import Search from "./Search";
+// import Header from "./components/Header";
 
 function Main() {
-  return <SearchInput />;
+  return (
+    <>
+      <Search />;
+    </>
+  );
 }
 
 export default Main;

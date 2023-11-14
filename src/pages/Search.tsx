@@ -2,9 +2,9 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import theme from "../../styles/theme";
+import theme from "../styles/theme";
 import Loading from "./Loading";
-import SearchResult from "./SearchResult";
+import SearchResult from "./components/SearchResult";
 
 export type DataProps = {
   blogname: string;
@@ -14,7 +14,7 @@ export type DataProps = {
   url: string;
 };
 
-const SearchSection = styled.section`
+const SearchInputSection = styled.section`
   align-items: center;
   height: 40px;
   display: flex;
@@ -50,7 +50,7 @@ const SearchSection = styled.section`
   }
 `;
 
-const SearchResultSection = styled.section`
+const SearchResultsSection = styled.section`
   display: grid;
   gap: 60px;
   grid-template-columns: repeat(4, 1fr);
@@ -66,7 +66,7 @@ const SearchResultSection = styled.section`
   }
 `;
 
-const SearchInput = () => {
+const Search = () => {
   const KAKAO_API = "cf9234ea5d7459ac09ff312f052abc61";
   const apiUrl = "https://dapi.kakao.com/v2/search/blog";
 
@@ -112,14 +112,14 @@ const SearchInput = () => {
 
   return (
     <div>
-      <SearchSection>
+      <SearchInputSection>
         <input type="text" placeholder="검색어를 입력해주세요" onChange={onSearchInputChange} value={keyword} />
         <button onClick={onSearchBtnClick}>검색</button>
-      </SearchSection>
+      </SearchInputSection>
       {isLoading ? (
         <Loading />
       ) : (
-        <SearchResultSection>
+        <SearchResultsSection>
           {searchResults.map((data) => {
             return (
               <SearchResult
@@ -132,10 +132,10 @@ const SearchInput = () => {
               />
             );
           })}
-        </SearchResultSection>
+        </SearchResultsSection>
       )}
     </div>
   );
 };
 
-export default SearchInput;
+export default Search;
